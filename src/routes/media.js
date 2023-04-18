@@ -10,7 +10,7 @@ module.exports = app => {
         const { type, name } = req.params
 
         res.sendFile(path.join(__dirname, `../upload/${name}`,))
-        res.sendFile(path.join(__dirname, `../uploadvideo/${name}`,))
+        
     })
 
     app.use('/api', router)
