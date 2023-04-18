@@ -198,119 +198,119 @@ exports.delete = async (req, res) => {
 
     await User.findOne({ _id: req.user.id }).then(async (userData) => {
 
-        // if (userData.role === 'faculty') {
+        if (userData.role === 'faculty') {
 
-        //     await Cource.findOne({ _id: req.params.id }).then(async (data) => {
+            await Cource.findOne({ _id: req.params.id }).then(async (data) => {
 
-        //         if (data === null) {
-        //             handleError('Invalid course Id', 400, res)
-        //             return
-        //         }
+                if (data === null) {
+                    handleError('Invalid course Id', 400, res)
+                    return
+                }
 
-        //         const cource_ids = []
+                const cource_ids = []
 
-        //         const cource_video_id = []
-        //         const imageFile_URL = []
+                const cource_video_id = []
+                const imageFile_URL = []
 
-        //         const fileUrl = data && data?.file_URL.replace("/media", "/")
-        //         const fileName = path.join(__dirname, `../upload/${fileUrl}`,)
+                const fileUrl = data && data?.file_URL.replace("/media", "/")
+                const fileName = path.join(__dirname, `../upload/${fileUrl}`,)
 
-        //         const cId = data._id
+                const cId = data._id
 
-        //         await Cource.deleteOne({ _id: data._id }).then(async (result) => {
-        //             fs.unlinkSync(fileName)
-        //             console.log('Cource file deleted successfully ')
+                await Cource.deleteOne({ _id: data._id }).then(async (result) => {
+                    fs.unlinkSync(fileName)
+                    console.log('Cource file deleted successfully ')
 
-        //             //************************************** Fine tune 1 ********************************************//
+                    //************************************** Fine tune 1 ********************************************//
 
-        //             await CourceVideo.find({ cource_id: cId, }).then(async (result) => {
+                    await CourceVideo.find({ cource_id: cId, }).then(async (result) => {
 
-        //                 console.log('result>>>>>>>>>>>>>>>>>>>>>>>>', result);
+                        console.log('result>>>>>>>>>>>>>>>>>>>>>>>>', result);
 
-        //                 result.forEach(val => {
+                        result.forEach(val => {
 
-        //                     cource_video_id.push(val._id)
+                            cource_video_id.push(val._id)
 
-        //                     let newFileUrl = val.imageFile_URL.replace("/media", "/")
+                            let newFileUrl = val.imageFile_URL.replace("/media", "/")
 
-        //                     let newFileName = path.join(__dirname, `../upload/${newFileUrl}`,)
+                            let newFileName = path.join(__dirname, `../upload/${newFileUrl}`,)
 
-        //                     imageFile_URL.push(newFileName)
-        //                 });
+                            imageFile_URL.push(newFileName)
+                        });
 
-        //                 await CourceVideo.deleteMany({ cource_id: { $in: cId } }).then(async (dt) => {
-        //                     imageFile_URL.forEach(val => {
+                        await CourceVideo.deleteMany({ cource_id: { $in: cId } }).then(async (dt) => {
+                            imageFile_URL.forEach(val => {
 
-        //                         fs.unlinkSync(val)
-        //                         console.log('Image File deleted successfully')
-        //                     })
+                                fs.unlinkSync(val)
+                                console.log('Image File deleted successfully')
+                            })
 
-        //                     await Question.deleteMany({ video_id: { $in: cource_video_id } })
+                            await Question.deleteMany({ video_id: { $in: cource_video_id } })
 
-        //                     //************************************** Fine tune 2 ********************************************//
+                            //************************************** Fine tune 2 ********************************************//
 
-        //                     const videoFilesName = []
-        //                     const documentFilesName = []
+                            const videoFilesName = []
+                            const documentFilesName = []
 
-        //                     await VideoCollection.find({ cource_video_Id: { $in: cource_video_id } }).then(async (videData) => {
+                            await VideoCollection.find({ cource_video_Id: { $in: cource_video_id } }).then(async (videData) => {
 
-        //                         videData.forEach(item => {
+                                videData.forEach(item => {
 
-        //                             let newVideoFileUrl = item.videoFile_URL.replace("/media", "/")
+                                    let newVideoFileUrl = item.videoFile_URL.replace("/media", "/")
 
-        //                             let newVideoFileName = path.join(__dirname, `../upload/${newVideoFileUrl}`,)
+                                    let newVideoFileName = path.join(__dirname, `../upload/${newVideoFileUrl}`,)
 
-        //                             let newDocsFileUrl = item.documentFile_URL.replace("/media", "/")
+                                    let newDocsFileUrl = item.documentFile_URL.replace("/media", "/")
 
-        //                             let newDocsFileName = path.join(__dirname, `../upload/${newDocsFileUrl}`,)
+                                    let newDocsFileName = path.join(__dirname, `../upload/${newDocsFileUrl}`,)
 
-        //                             videoFilesName.push(newVideoFileName)
-        //                             documentFilesName.push(newDocsFileName)
-        //                         })
+                                    videoFilesName.push(newVideoFileName)
+                                    documentFilesName.push(newDocsFileName)
+                                })
 
-        //                         await VideoCollection.deleteMany({ cource_id: { $in: cource_ids } }).then(dt => {
+                                await VideoCollection.deleteMany({ cource_id: { $in: cource_ids } }).then(dt => {
 
-        //                             videoFilesName.forEach(val => {
-        //                                 fs.unlinkSync(val)
-        //                                 console.log('Video files deleted successfully')
-        //                             })
+                                    videoFilesName.forEach(val => {
+                                        fs.unlinkSync(val)
+                                        console.log('Video files deleted successfully')
+                                    })
 
-        //                             documentFilesName.forEach(val => {
-        //                                 fs.unlinkSync(val)
-        //                                 console.log('Document files  File deleted successfully ')
-        //                             })
+                                    documentFilesName.forEach(val => {
+                                        fs.unlinkSync(val)
+                                        console.log('Document files  File deleted successfully ')
+                                    })
 
-        //                         }).catch(err => {
-        //                             handleError(err.message, 400, res)
-        //                         })
-        //                     })
+                                }).catch(err => {
+                                    handleError(err.message, 400, res)
+                                })
+                            })
 
-        //                 })
-        //                     .catch(err => {
-        //                         handleError(err.message, 400, res)
-        //                     })
+                        })
+                            .catch(err => {
+                                handleError(err.message, 400, res)
+                            })
 
-        //             }).catch(err => {
-        //                 handleError(err.message, 400, res)
-        //             })
-        //         })
-        //             .catch(err => {
-        //                 handleError(err.message, 400, res)
-        //             })
+                    }).catch(err => {
+                        handleError(err.message, 400, res)
+                    })
+                })
+                    .catch(err => {
+                        handleError(err.message, 400, res)
+                    })
 
-        //         handleResponse(res, 'cource delete successsfully', 200)
+                handleResponse(res, 'cource delete successsfully', 200)
 
-        //     }).catch(err => {
-        //         handleError(err.message, 400, res)
-        //     })
+            }).catch(err => {
+                handleError(err.message, 400, res)
+            })
 
-        // }
-        // else {
+        }
+        else {
 
 
-        //     handleError('Course must be delete only facult', 400, res)
-        //     return
-        // }
+            handleError('Course must be delete only facult', 400, res)
+            return
+        }
 
 
 
