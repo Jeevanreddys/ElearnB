@@ -38,7 +38,7 @@ exports.create = async (req, res) => {
     
             const facultyEmail = FacultyDetails.email
 
-            sendMailer(facultyEmail,title,`Student: ${req.user.first_name} have a problem at Time Stamp: ${timeStamp} - Message: ${message}`,res)
+            //sendMailer(facultyEmail,title,`Student: ${req.user.first_name} have a problem at Time Stamp: ${timeStamp} - Message: ${message}`,res)
 
             handleResponse(res, datad, 201)
 

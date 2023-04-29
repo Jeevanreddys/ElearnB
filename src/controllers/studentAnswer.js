@@ -9,7 +9,11 @@ exports.getOverAllScore = async (req, res) => {
         const score = []
         let course_name = ''
 
-      
+        data.map((v) => {
+            total_question.push(v.total_question)
+            score.push(v.score)
+            course_name = v.course_name
+        })
 
         const percent = getPercentage(total_question, score)
 
