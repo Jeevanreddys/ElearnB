@@ -12,6 +12,7 @@ exports.handleError = (error, status = 400, res,) => {
         const data = {};
         error?.details.forEach(v => {
             data[v.context?.key] = [v.message.replace(/"/g, '')];
+            message: error, error: true
         })
 
         return res.status(status).send({ error: data })
