@@ -9,6 +9,7 @@ module.exports = app => {
 
     router.get('/replies', replies.findAll)
 
+    router.get('/replies/:comment_id', replies.getReplyByComment)
 
 
     app.use('/api', router);
