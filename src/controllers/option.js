@@ -43,5 +43,9 @@ exports.create = async (req, res) => {
 }
 
 exports.findAll = async (req, res) => {
-  
+    await Option.find().then(async (data) => {
+        handleResponse(res, data, 200)
+    }).catch(err => {
+        handleError(err.message, 400, res)
+    })
 }
