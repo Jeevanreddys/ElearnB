@@ -13,7 +13,17 @@ try {
         },
     ]
 
-   
+    tranEmailApi.sendTransacEmail({
+        sender,
+        to: receivers,
+        subject: subject,
+        textContent: body,
+        params: {
+            role: 'Frontend',
+        },
+    })
+        .then(console.log)
+        .catch(console.log)
 
     bookMark.push(req.body);
     res.render("home", { body: req.body, click });
