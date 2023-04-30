@@ -35,4 +35,8 @@ exports.findAll = async (req, res) => {
             handleError(err.message, 400, res)
         })
 
-    
+    } else {
+        handleError('Only faculty members have access to these endpoints.', 400, res)
+        return
+    }
+}
