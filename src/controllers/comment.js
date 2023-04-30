@@ -35,9 +35,6 @@ exports.create = async (req, res) => {
     
             const faculty_id = CourceDetails.faculty_id 
             const FacultyDetails = await User.findOne({faculty_id:faculty_id})
-
-            const Video_id = CourceDetails.faculty_id 
-            const CourseDetails = await User.findOne({Video_id:Video_id})
     
             const facultyEmail = FacultyDetails.email
 

@@ -73,12 +73,12 @@ exports.getQuestionByVideoId = async (req, res) => {
         handleResponse(res, 'You have already answer this quize', 409)
         return
     }
-    // await Question.find({ video_id: req.params.id })
-    //     .then(data => {
-    //         handleResponse(res, data, 200)
-    //     }).catch(err => {
-    //         handleError(err.message, 400, res)
-    //     })
+    await Question.find({ video_id: req.params.id })
+        .then(data => {
+            handleResponse(res, data, 200)
+        }).catch(err => {
+            handleError(err.message, 400, res)
+        })
 }
 
 exports.update = async (req, res) => {

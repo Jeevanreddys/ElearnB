@@ -79,7 +79,7 @@ exports.multipleFileUploading = async (req, res, next) => {
         destination: function (req, file, cb) {
             // if (file.mimetype === 'image/jpe' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
 
-           // cb(null, path.join(BASE_PATH, '../upload'))
+            cb(null, path.join(BASE_PATH, '../upload'))
 
             // } else
             //     if (file.mimetype === 'application/pdf') {

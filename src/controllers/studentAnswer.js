@@ -12,6 +12,7 @@ exports.getOverAllScore = async (req, res) => {
         data.map((v) => {
             total_question.push(v.total_question)
             score.push(v.score)
+            total_question.push(v.score)
             course_name = v.course_name
         })
 
