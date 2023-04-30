@@ -115,19 +115,6 @@ exports.multipleFileUploading = async (req, res, next) => {
         storage: storage,
         fileFilter: fileFilter
     })
-    if (file.mimetype === 'application/pdf') {
-                 cb(null, path.join(BASE_PATH, '../upload/docs'))
-
-             } else
-                 if (file.mimetype === 'video/mp4' || file.mimetype === 'video/webm') {
-                     cb(null, path.join(BASE_PATH, '../upload/videos'))
-                 } else
-                     if (file.mimetype === 'audio/mpeg' || file.mimetype === 'audio/mp3' || file.mimetype === 'audio/wav') {
-                         cb(null, path.join(BASE_PATH, '../upload/audio'))
-                     }
-                     else {
-                         return res.status(400).send({ error: { message: ['Invalid file type'], }, })
-                     }
 
     upload.fields([{ name: 'image', maxCount: 1 }, { name: 'gallery', maxCount: 1 }, { name: 'document', maxCount: 1 }])(req, res, next)
 
