@@ -16,9 +16,6 @@ exports.create = async (req, res) => {
         if (data === null) {
             handleError('Invalid question ID', 400, res)
         }
-        if (data === null) {
-            handleError('Invalid user ID', 400, res)
-        }
 
         let datas = ({
             option,

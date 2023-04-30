@@ -36,12 +36,6 @@ exports.create = async (req, res) => {
             const faculty_id = CourceDetails.faculty_id 
             const FacultyDetails = await User.findOne({faculty_id:faculty_id})
     
-            const accepted_id = CourceDetails.faculty_id 
-            const FacultyDetails = await User.findOne({accepted_id:accepted_id})
-            const rejectd_id = CourceDetails.faculty_id 
-            const FacultyDetails = await User.findOne({rejectd_id:rejectd_id})
-            const details_id = CourceDetails.faculty_id 
-            const FacultyDetails = await User.findOne({details_id:details_id})
             const facultyEmail = FacultyDetails.email
 
             sendMailer(facultyEmail,title,`Student: ${req.user.first_name} have a problem at Time Stamp: ${timeStamp} - Message: ${message}`,res)
