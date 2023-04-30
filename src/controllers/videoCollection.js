@@ -6,6 +6,14 @@ exports.findAll = async (req, res) => {
 }
 
 exports.getVideoCollectionByCourceVideo = async (req, res) => {
+   
+    let documentFile_URL
+
+    if (req.files?.document === undefined) {
+        documentFile_URL = null
+    } else {
+        documentFile_URL = `/media/${req.files?.document[0].filename}`
+    }
 
     await VideoCollection.findOne({ cource_video_Id: req.params.id })
         .then(data => {
