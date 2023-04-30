@@ -16,5 +16,4 @@ module.exports = app => {
 
     router.delete('/cources/:id', cources.delete,)
 
-    app.use('/api', router);
 }
