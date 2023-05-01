@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
         const result = await Answer.findOne({ video_id: video_id, user_id: req.user.id });
 
         if (result) {
-            handleError('You have already answered this quiz', 400, res)
+            handleError('You have already answered this quize', 400, res)
             return
         } else {
 
@@ -28,7 +28,7 @@ exports.create = async (req, res) => {
 
                 if (!questions.length) {
                     return res.status(404).send({
-                        message: 'Questions are not available!!!', error: true
+                        message: 'Questions is not available!!!', error: true
                     })
                 }
 
@@ -208,7 +208,7 @@ exports.delete = async (req, res) => {
         handleError('Invalid answer Id', 400, res)
     }
     await Answer.deleteOne({ _id: req.params.id }).then(async (data) => {
-        handleResponse(res, 'Answer deleted successfully', 200)
+        handleResponse(res, 'Answer delete successfully', 200)
     }).catch(err => {
         handleError(err.message, 400, res)
     })
@@ -226,7 +226,7 @@ exports.update = async (req, res) => {
     }
 
     await Answer.updateOne(filter, update, { new: true }).then(async (data) => {
-        handleResponse(res, 'Question deleted successfully', 200)
+        handleResponse(res, 'Question delete successfully', 200)
     }).catch(err => {
         handleError(err.message, 400, res)
     })

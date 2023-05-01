@@ -17,7 +17,7 @@ exports.handleError = (error, status = 400, res,) => {
         return res.status(status).send({ error: data })
     }
     else {
-        return res.status(400).send({
+        return res.status(status).send({
             message: error, error: true
         })
     }
@@ -25,31 +25,35 @@ exports.handleError = (error, status = 400, res,) => {
 
 exports.sendMailer = async (email, subject, message, res) => {
 
-    const transporter = nodemailer.createTransport({
-        host: `${process.env.SMPT_EMAIL_HOST}`,
-        port: `${process.env.SMPT_EMAIL_PORT}`,
-        auth: {
-            user: `${process.env.SMPT_EMAIL_USER}`,
-            pass: `${process.env.SMPT_EMAIL_PASSWORD}`
-        },
-        // secure: false
-    })
-
-    const data = {
-        from: `${process.env.SMPT_EMAIL_FROM}`,
-        to: `${email}`,
-        subject: `${subject} - E-learning`,
-        html: `${message}`,
-    }
-
-    transporter.sendMail(data, (error, info) => {
-        if (error) {
-            console.log('error>>>>>>', error);
-            res.status(error.responseCode).send(error)
+    try{
+        const transporter = nodemailer.createTransport({
+            host: `${process.env.SMPT_EMAIL_HOST}`,
+            port: `${process.env.SMPT_EMAIL_PORT}`,
+            auth: {
+                user: `${process.env.SMPT_EMAIL_USER}`,
+                pass: `${process.env.SMPT_EMAIL_PASSWORD}`
+            },
+            // secure: false
+        })
+    
+        const data = {
+            from: `${process.env.SMPT_EMAIL_FROM}`,
+            to: `${email}`,
+            subject: `${subject} - E-learning`,
+            html: `${message}`,
         }
-    })
-
-    return
+    
+        transporter.sendMail(data, (error, info) => {
+            if (error) {
+                console.log('error>>>>>>', error);
+                res.status(error.responseCode).send(error)
+            }
+        })
+    
+        return
+    }catch(error){ 
+        res.status(error.responseCode).send(error)
+     }
 }
 
 exports.createUUID = () => {
@@ -61,4 +65,98 @@ exports.createUUID = () => {
     })
 
     return uuid
+}
+
+exports.createOTP = () => {
+    
+    return Math.floor(100000 + Math.random() * 900000)
+}
+
+exports.getOptions = async (question, option) => {
+    const questions = question.map((val, index) => {
+        return { question_id: val._id, }
+    })
+
+    const k = []
+
+    for (let i = 0; i < questions.length; i++) {
+        const y = await Option.find({ question_id: { $in: questions[i].question_id } })
+        let obj = y
+
+        k.push({ ...question[i]._doc, ['options']: obj })
+    }
+
+    return k
+}
+
+
+exports.getAnswer = async (question) => {
+
+    const questions = question.map((val, index) => {
+        return { question_id: val._id, }
+    })
+
+    const k = []
+
+    for (let i = 0; i < questions.length; i++) {
+        const y = await Answer.find({ question_id: { $in: questions[i].question_id } })
+        let obj = y
+
+        k.push({ ...question[i]._doc, ['answers']: obj })
+    }
+
+    return k
+}
+
+
+exports.getAnswersData = async (question_ids = [], getAnswers = []) => {
+
+    const questionIds = []
+    let question = []
+
+    for (let i = 0; i < question_ids.length; i++) {
+        question.push(...await Question.find({ _id: question_ids[i], currectAnswer: getAnswers[i] })
+        )
+    }
+
+    if (question.length > 0) {
+        question.map((id) => {
+            questionIds.push(id._id)
+        })
+        return questionIds
+    }
+    else {
+        return []
+    }
+}
+
+exports.getPercentage = (totalQuestion = [], totalScore = []) => {
+
+    const sumOfQustions = totalQuestion.reduce((a, b) => a + b, 0);
+    const sumOfAnswers = totalScore.reduce((a, b) => a + b, 0);
+
+    const percent = (sumOfAnswers / sumOfQustions) * 100
+
+    return parseFloat(percent).toFixed(2)
+}
+
+exports.helpDeskMailer = (fromEmail, name, subject, message) => {
+    const apiKey = client.authentications['api-key'];
+    apiKey.apiKey = process.env.API_KEY;
+
+    const tranEmailApi = new Sib.TransactionalEmailsApi();
+
+    const sender = { email: fromEmail, name: name, }
+
+    const receivers = [{ email: `${process.env.TO_EMAIL}`, },]
+
+    tranEmailApi.sendTransacEmail({
+        sender,
+        to: receivers,
+        subject: subject,
+        textContent: message,
+        params: {
+            role: 'Frontend',
+        },
+    }).then(console.log).catch(console.log)
 }

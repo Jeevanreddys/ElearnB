@@ -27,8 +27,8 @@ const db = {
     Answer: require('./answer'),
     Option: require('./option'),
     StudentAnswer: require('./studentAnswer'),
-    HelpDesk: require('./helpDesk')
-
+    HelpDesk: require('./helpDesk'),
+    Annotation: require('./annotation')
 }
 
 

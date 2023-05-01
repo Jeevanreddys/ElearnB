@@ -17,6 +17,7 @@ const options = require('./option')
 const studentAnswers = require('./studentAnswer')
 const helpDesks = require('./helpDesk')
 
+const annotations = require('./annotation')
 
 module.exports = {
     auths,
@@ -34,4 +35,6 @@ module.exports = {
     options,
     studentAnswers,
     helpDesks,
+
+    annotations,
 }

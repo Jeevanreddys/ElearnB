@@ -98,7 +98,10 @@ exports.multipleFileUploading = async (req, res, next) => {
         },
 
         filename: function (req, file, cb) {
-            cb(null, Date.now() + file.originalname)
+            const string = file.originalname.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '')
+            const myFile = string.split(" ").join("_")
+            
+            cb(null, Date.now() + myFile)
         },
     })
 

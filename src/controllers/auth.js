@@ -2,7 +2,7 @@ const md5 = require("md5")
 const { User } = require("../models")
 const { login, resetEmail } = require("../utils/common")
 const jwt = require('jsonwebtoken')
-const { handleError, sendMailer, handleResponse, createUUID } = require("../utils/helpers")
+const { handleError, sendMailer, handleResponse, createUUID, createOTP } = require("../utils/helpers")
 // Login User
 
 exports.login = async (req, res,) => {
@@ -62,11 +62,11 @@ exports.forgotPassword = async (req, res) => {
     const user = await User.findOne({ email: email.toLowerCase() })
 
     if (user === null) {
-        handleError('Invalid email address', req, res)
+        handleError('Invalid email address', 404, res)
     }
 
     if (user) {
-        const token = createUUID()
+        const token = createOTP()
         await User.updateOne({ _id: user._id }, { token: token },
             {
                 new: true
@@ -78,12 +78,12 @@ exports.forgotPassword = async (req, res) => {
                                         <div style="margin:50px autowidth:60%padding:20px 0">
                                         <p style="font-size:25px">Hello,</p>
 
-                                        <p>Use the code below to recover access to your Human relief account.</p>
+                                        <p>Use the code below to recover access to your E-learning account.</p>
                                                 <div style="border-bottom:1px solid #eee"> OTP = ${token}</div>
 
                                         <p>The recovery code is only valid for 24 hours after it’s generated. If your code has already expired, you can restart the recovery process and generate a new code.
                                         If you haven't initiated an account recovery or password reset in the last 24 hours, ignore this message.</p>
-                                        <p style="font-size:0.9em">Best Regards,<br />HUMAN RELIEF</p>
+                                        <p style="font-size:0.9em">Best Regards,<br />E-learning</p>
                                         </div>
                                         </div>
                                         </div>`
@@ -126,6 +126,6 @@ exports.forgotPasswordVerify = async (req, res) => {
 
 exports.me = async (req, res) => {
     const user = await User.findOne({ _id: req.user.id })
-    user === null ? handleError('Unauthorized user', 400, res) : handleResponse(res, user, 200)
+    user === null ? handleError('Unauthorized user', 401, res) : handleResponse(res, user, 200)
 
 }

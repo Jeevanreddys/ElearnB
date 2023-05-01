@@ -55,32 +55,17 @@ exports.create = async (req, res) => {
             imageFile_URL,
             imageFile_size: req.files?.image === undefined ? 0 : req.files?.image[0].size ? req.files?.image[0].size : 0,
 
-            //************gallery*************//
-            // videoOriginal_file_name: req.files?.gallery === undefined ? null : req.files?.gallery[0]?.originalname,
-            // videoFile_name: req.files?.gallery === undefined ? null : req.files?.gallery[0]?.filename,
-            // videoType: newVideoFileURL ? newVideoFileURL : null,
-            // videoFile_URL,
-            // videoFile_size: req.files?.gallery === undefined ? 0 : req.files?.gallery[0].size ? req.files?.gallery[0].size : 0,
-
-            //************document*************//
-            // documentOriginal_file_name: req.files?.document === undefined ? null : req.files?.document[0]?.originalname,
-            // documentFile_name: req.files?.document === undefined ? null : req.files?.document[0]?.filename,
-            // documentType: newDocsFileURL ? newDocsFileURL : null,
-            // documentFile_URL,
-            // documentFile_size: req.files?.document === undefined ? 0 : req.files?.document[0].size ? req.files?.document[0].size : 0,
-
         })
 
         const newCourceVideo = new CourceVideo(datas);
 
         try {
-
             await newCourceVideo.save()
 
             const videoData = {
-
                 title: newCourceVideo.title,
                 cource_video_Id: newCourceVideo._id,
+                course_Id: cource_id,
                 sort_description: newCourceVideo.sort_description,
                 description: newCourceVideo.description,
 

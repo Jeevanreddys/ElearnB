@@ -14,6 +14,7 @@ module.exports = app => {
 
     router.get('/videoCollections/:id', videoCollections.getVideoCollectionByCourceVideo)
 
+    router.get('/videoCollections/course/:id', videoCollections.getVideoCollectionByCource)
 
     app.use('/api', router);
 }

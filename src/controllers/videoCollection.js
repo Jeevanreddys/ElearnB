@@ -12,3 +12,18 @@ exports.getVideoCollectionByCourceVideo = async (req, res) => {
             handleResponse(res, data, 200)
         }).catch(err => { handleError(err, 400, res) })
 }
+exports.getVideoCollectionByCource = async (req, res) => {
+
+    await VideoCollection.find({ course_Id: req.params.id })
+
+        .then(data => {
+            const documents = []
+
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                documents.push(element.documentFile_URL)
+            }
+
+            handleResponse(res, data, 200)
+        }).catch(err => { handleError(err, 400, res) })
+}
